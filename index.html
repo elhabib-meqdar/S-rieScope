@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-[#000000] text-white m-5">
+    <header class="flex gap-2 mb-20 items-center max-w-[1280px] my-0 mx-auto">
+
+        <img class="w-16" src="images/Screenshot 2026-11-12 090050.png" alt="">
+        
+        <p class="text-2xl font-bold">Sériescope</p>
+    </header>
+    <main class="max-w-[1280px] my-0 mx-auto">
+        <h2 class="text-3xl font-bold mb-3">Explore les séries TV</h2>
+        <p class="mb-7">Retrouve tes séries préférées et enrichis le catalogue.</p>
+
+        <section class=" border border-[#393939] rounded-md p-5 bg-[#191919] mb-8">
+            <h2 class="text-2xl font-bold mb-5">Ajouter une série</h2>
+            <p class="mb-5">Les champs marqués d’un * sont obligatoires.</p>
+            <div class="grid gap-4 md:grid-cols-2 mb-3">
+                <div>
+                    <label for="sérieName" class="font-semibold">Nom de la série *</label><br>
+                    <input id="sérieName" type="text" placeholder="      Ex. The Bear"
+                    class=" border border-[#393939] rounded-md h-12 w-full">
+                </div>
+
+                <div>
+                    <label for="genreSérie"class="font-semibold">Genre(s) *<small>séparés par des virgules</small></label><br>
+                    <input id="genreSérie" type="text" placeholder="       Ex. Drame, Comédie"
+                    class=" border border-[#393939]  rounded-md h-12 w-full">
+                </div>
+            </div>
+            <div class="mb-10">
+                <label for="sérieDescription"class="font-semibold">Description<span>facultative</span></label><br>
+                <input id="sérieDescription" type="text" placeholder="     Résume la série en quelques mots…"
+                class=" border border-[#393939]  rounded-lg pb-13 w-full">
+            </div>
+            <button id="buttonAjouter" class="bg-white text-black rounded-md h-12 w-full md:w-70 ">
+                ＋ Ajouter la série
+            </button>
+
+        </section>
+
+        <section class="mb-5">
+            <h2 class="text-2xl font-bold mb-5">Catalogue des séries</h2>
+            <p class="mb-5">Recherche par nom ou explore un genre.</p>
+            <div class=" border border-[#393939] rounded-md p-5 bg-[#191919] md:grid grid-cols-2 gap-3">
+                <div>
+                    <label for="recherchParNom">Recherche</label><br>
+                    <input type="text" id="recherchParNom" placeholder="      Ex. Breaking Bad"
+                    class=" border border-[#393939] rounded-md h-12 w-full">
+                </div>
+                <div class="grid grid-cols-[7fr_3fr] gap-3 items-center">
+                    <div>
+                        <label for="recherchParGenre">Genre</label><br>
+                        <select type="text" id="recherchParGenre" class=" border border-[#393939] rounded-md h-12 w-full">
+                            <option value="" class="text-black">Tous les genres</option>
+                            
+                        </select>
+                    </div>
+                    <button id="buttonRéinitialiser" class="rounded h-12 w-full border border-[#393939] mt-6">↻ Réinitialiser</button>
+                </div>
+            </div>
+        </section>
+        <div>
+            <section id="sérieDetel"></section>
+            <div id="sériesEtNombre">
+                <p id="nombreSériesAficher"></p>
+                <section id="listSéries" class=" md:grid grid-cols-3 gap-3"></section>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="js/script.js"></script>
+</html>
