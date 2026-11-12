@@ -58,23 +58,22 @@
                     <div>
                         <label for="recherchParGenre">Genre</label><br>
                         <select type="text" id="recherchParGenre" class=" border border-[#393939] rounded-md h-12 w-full">
-                            <option value="">Tous les genres</option>
+                            <option value="" class="text-black">Tous les genres</option>
                             
                         </select>
                     </div>
                     <button id="buttonRéinitialiser" class="rounded h-12 w-full border border-[#393939] mt-6">↻ Réinitialiser</button>
                 </div>
-                
-                
             </div>
-            <p id="nombreSériesAficher"></p>
         </section>
-        <section id="listSéries" class=" md:grid grid-cols-3 gap-3">
-
-        </section>
-
-
+        <div>
+            <section id="sérieDetel"></section>
+            <div id="sériesEtNombre">
+                <p id="nombreSériesAficher"></p>
+                <section id="listSéries" class=" md:grid grid-cols-3 gap-3"></section>
+            </div>
+        </div>
     </main>
 </body>
-<script src="script.js"></script>
+<script src="js/script.js"></script>
 </html>
