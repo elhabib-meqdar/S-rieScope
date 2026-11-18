@@ -1,5 +1,6 @@
 
-async function getData() {
+
+export async function getData() {
   message.textContent = "Chargement...";
   tab=[]
   try {

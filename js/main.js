@@ -49,27 +49,27 @@ let modification=false
 let genreSérieV=sériegenre.value.split(",")
 
   
+import{getData}from"./services/serieService"
 
 
-
-async function getData() {
-  message.textContent = "Chargement...";
-  tab=[]
-  try {
-    const response = await api.get('/series');
+// async function getData() {
+//   message.textContent = "Chargement...";
+//   tab=[]
+//   try {
+//     const response = await api.get('/series');
   
-    const sériess = response.data;
-    message.textContent = "";
     
-    séries=response.data
-    affichage(séries)
-    console.log(séries);
+//     message.textContent = "";
+    
+//     séries=response.data
+//     affichage(séries)
+//     console.log(séries);
     
  
-  } catch (error) {
-    afficherErreur(error)
-  }
-}
+//   } catch (error) {
+//     afficherErreur(error)
+//   }
+// }
 
 
 async function suprimerSérie(id) {
@@ -105,7 +105,7 @@ async function ajouterSérie() {
         const response = await api.post('/series',objSérie);
         console.log(response.data);
         console.log(response.status);
-        séries.push(response.data)
+        séries.unshift(response.data)
         console.log(séries);
         affichage(séries)
         
@@ -147,9 +147,10 @@ buttonAjouter.addEventListener("click" ,() =>{
 
 
 async function chercherSérie(titre,genre,langue ) {
-    console.log(genre);
+    message.textContent="recherch en cours"
     
     try {
+        
         const response = await api.get('/series',{
             params:{
                 name:titre,
@@ -158,11 +159,16 @@ async function chercherSérie(titre,genre,langue ) {
 
             }
         })
-        console.log(response.data);
-        let séries=response.data
-        console.log(séries);
+  
+        let sériess=response.data
+        console.log(sériess.length);
         
-        affichage(séries)
+         if (sériess.length === 0){
+            message.textContent=("Aucune série trouvée")
+        }else{
+            message.textContent=""
+        }
+        affichage(sériess)
    
         
     } catch (error) {
@@ -178,6 +184,7 @@ buttonAnnuler.addEventListener("click",() =>{
     })
     buttonAjouter.textContent=("＋ Ajouter la série")
     buttonAnnuler.hidden=true
+    message.textContent=""
 })
 
 async function modifierSérie(id){
@@ -205,6 +212,8 @@ async function modifierSérie(id){
         
     } catch (error) {
         afficherErreur(error)
+        console.log(response.status);
+        
     }
 }
 
@@ -252,6 +261,7 @@ buttonRéinitialiser.addEventListener("click", (e) =>{
     recherchParNom.value=""
     recherchParGenre.value=""
     recherchParLanguage.value=""
+    message.textContent=""
     affichage(séries)
 })
 
@@ -271,14 +281,22 @@ buttonRéinitialiser.addEventListener("click", (e) =>{
 function affichage (séries){
     
     listSéries.replaceChildren()
+
+    nombreSéries=séries.length
+  
+    nombreSériesAficher.textContent=(nombreSéries +" séries affichées")
+
+   
+  
+    
+    
+    nombreSériesAficher.classList.add('text-[#BABABA]','pt-2','mb-3',)
+
     séries.forEach(série =>{
         
         lang(série.language)
         
-        nombreSéries=séries.length
-  
-        nombreSériesAficher.textContent=(nombreSéries +" séries affichées")
-        nombreSériesAficher.classList.add('text-[#BABABA]','pt-2','mb-3',)
+        
 
 
         const sérieCarte =document.createElement("article")
