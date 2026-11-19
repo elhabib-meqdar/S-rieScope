@@ -1,4 +1,18 @@
-let api =axios.create({ baseURL: 'https://seriescope-api.vercel.app/api', timeout: 8000, headers: { 'X-Learner': 'e.meqdar' } })
+// let api =axios.create({ baseURL: 'https://seriescope-api.vercel.app/api', timeout: 8000, headers: { 'X-Learner': 'e.meqdar' } })
+
+import { api } from "./services/api.js";
+// import { getAll } from "./services/serieService.js";
+
+import { getData } from "./services/serieService.js";
+import { suprimer } from "./services/serieService.js";
+import { ajouter } from "./services/serieService.js";
+import { filtrage } from "./services/serieService.js";
+import { modifier } from "./services/serieService.js";
+
+
+// import { chercherSérie } from "./data/store.js";
+// import { carteSérie } from "./ui/cards.js";
+
 let séries=[]
 
 const listSéries =document.getElementById("listSéries")
@@ -12,11 +26,11 @@ const nombreSériesAficher=document.getElementById("nombreSériesAficher")
 const buttonRéinitialiser =document.getElementById("buttonRéinitialiser")
 const buttonAjouter =document.getElementById("buttonAjouter")
 const buttonAnnuler =document.getElementById("buttonAnnuler")
-const sérieDetel =document.getElementById("sérieDetel")
-const sériesEtNombre =document.getElementById("sériesEtNombre")
+// const sérieDetel =document.getElementById("sérieDetel")
+// const sériesEtNombre =document.getElementById("sériesEtNombre")
 const message=document.getElementById("message")
 const languageSérie=document.getElementById("languageSérie")
-const pourHidden = document.querySelectorAll(".pourHidden")
+
 
 
 
@@ -41,51 +55,55 @@ let tableaulangeu=[
     "Arabic","Spanish","French",
     "Hindi","Urdu","Portuguese","Turkish"
 ]
-let rechercheInput
-let filterGenre
+// let rechercheInput
+// let filterGenre
 let a=0
 let idSérieModifier
 let modification=false
-let genreSérieV=sériegenre.value.split(",")
+// let genreSérieV=sériegenre.value.split(",")
 
   
-import{getData}from"./services/serieService"
 
 
-// async function getData() {
-//   message.textContent = "Chargement...";
-//   tab=[]
-//   try {
-//     const response = await api.get('/series');
-  
+
+async function getAll() {
+  message.textContent = "Chargement...";
+  tab=[]
+  try {
     
-//     message.textContent = "";
+    const response = await getData()
     
-//     séries=response.data
-//     affichage(séries)
-//     console.log(séries);
+    message.textContent = "";
     
- 
-//   } catch (error) {
-//     afficherErreur(error)
-//   }
-// }
+    séries=response.data
+    affichage(séries)
+    console.log(séries);
+    
+  } catch (error) {
+    afficherErreur(error)
+  }
+}
 
 
 async function suprimerSérie(id) {
     try {
-        const response = await api.delete(`/series/${id}`);
+        const response = await suprimer(id)
         console.log(response.data)
         console.log(response.status)
-       
-        await getData()
+        
+
+        séries =séries.filter(série =>série.id !=id)
+        affichage(séries)
+        console.log(séries);
+        
+        
     } catch (error) {
         afficherErreur(error)
     }
     
 }
 
-
+getAll()
 
 
 
@@ -102,7 +120,7 @@ async function ajouterSérie() {
     
     try {
         
-        const response = await api.post('/series',objSérie);
+        const response = await ajouter(objSérie)
         console.log(response.data);
         console.log(response.status);
         séries.unshift(response.data)
@@ -113,6 +131,11 @@ async function ajouterSérie() {
         sériegenre.value=""
         sérieDescription.value=""
         languageSérie.value=""
+        message.textContent=("une série à étè ajouter")
+
+        setTimeout(() => {
+            message.textContent=""
+        }, 5000);
        
         
     }catch (error) {
@@ -121,10 +144,12 @@ async function ajouterSérie() {
 }
 
 
-getData()
+
 
 
 buttonAjouter.addEventListener("click" ,() =>{
+   
+    
     if(modification==false){
         if(sérieName.value.trim() !=="" &&
             sérieDescription.value!=="" &&
@@ -134,13 +159,53 @@ buttonAjouter.addEventListener("click" ,() =>{
 
         }
     }else{
-        if (sérieName!="") {
-            modifierSérie(idSérieModifier)
+        
+        modifierSérie(idSérieModifier)
+        buttonSuprimer.hidden=false
+        // if (sérieName!="") {
+        //     modifierSérie(idSérieModifier)
 
-        }
+        // }
         
     }
 })
+
+async function modifierSérie(id){
+    
+    try {
+        
+        const response = await modifier(id)
+      
+        let série=(response);
+        console.log(response.data);
+        
+        séries.forEach(s =>{
+            
+            if(s.id == série.id){
+                s.name=série.name
+                s.summary=série.summary
+                s.genres= série.genres
+                s.language = série.language   
+            }
+      
+        })
+  
+      console.log(séries);
+       affichage(séries)
+
+        sérieName.value=""
+        sérieDescription.value=""
+        sériegenre.value=""
+       
+        buttonAjouter.textContent=("＋ Ajouter la série")
+        buttonAnnuler.hidden=true
+        
+    } catch (error) {
+        afficherErreur(error)
+        
+        
+    }
+}
 
 
 
@@ -151,14 +216,9 @@ async function chercherSérie(titre,genre,langue ) {
     
     try {
         
-        const response = await api.get('/series',{
-            params:{
-                name:titre,
-                genres:genre,
-                language:langue 
-
-            }
-        })
+        const response = await filtrage(titre,genre,langue)
+           
+        
   
         let sériess=response.data
         console.log(sériess.length);
@@ -169,7 +229,7 @@ async function chercherSérie(titre,genre,langue ) {
             message.textContent=""
         }
         affichage(sériess)
-   
+        localStorage.setItem("série",JSON.stringify(sériess))
         
     } catch (error) {
         afficherErreur(error)
@@ -179,43 +239,17 @@ async function chercherSérie(titre,genre,langue ) {
 
 buttonAnnuler.addEventListener("click",() =>{
     sérieName.value=""
-    pourHidden.forEach(div =>{
-        div.hidden=false
-    })
+    sérieDescription.value=""
+    sériegenre.value=""
+    languageSérie.value=""
+    
     buttonAjouter.textContent=("＋ Ajouter la série")
     buttonAnnuler.hidden=true
+    buttonSuprimer.hidden=false
     message.textContent=""
 })
 
-async function modifierSérie(id){
-    try {
-        const response = await api.patch(`/series/${id}`,{
-            name:sérieName.value
-        });
-        let série=(response.data);
-        séries.forEach(s =>{
-        if(s.id == série.id){
-            s.name=série.name
-        }
-      
-       })
-  
-      console.log(séries);
-       affichage(séries)
 
-        sérieName.value=""
-        pourHidden.forEach(div =>{
-            div.hidden=false
-        })
-        buttonAjouter.textContent=("＋ Ajouter la série")
-        buttonAnnuler.hidden=true
-        
-    } catch (error) {
-        afficherErreur(error)
-        console.log(response.status);
-        
-    }
-}
 
 
 recherchParNom.addEventListener("input",(e) =>{
@@ -293,7 +327,9 @@ function affichage (séries){
     nombreSériesAficher.classList.add('text-[#BABABA]','pt-2','mb-3',)
 
     séries.forEach(série =>{
-        
+       
+        carteSérie(série)
+        function carteSérie(série){
         lang(série.language)
         
         
@@ -348,10 +384,10 @@ function affichage (séries){
             genreDeSérie.classList.add('bg-[#292929]','rounded-xl','px-1','ml-4',)
         })
         
-        const sérieDescription =document.createElement("p")
-        sérieDescription.innerHTML=série.summary
-        sérieCarte.append(sérieDescription)
-        sérieDescription.classList.add('mb-5','ml-4','text-sm','pt-3','line-clamp-2')
+        const sérieDescrip =document.createElement("p")
+        sérieDescrip.innerHTML=série.summary
+        sérieCarte.append(sérieDescrip)
+        sérieDescrip.classList.add('mb-5','ml-4','text-sm','pt-3','line-clamp-2')
 
         const buttonSuprimer =document.createElement("button")
         sérieCarte.append(buttonSuprimer)
@@ -373,15 +409,21 @@ function affichage (séries){
         buttonModifier.addEventListener("click",() =>{
             idSérieModifier =série.id
             modification=true
+
             sérieName.value = série.name
+            sérieDescription.value = série.summary
+            sériegenre.value = série.genres.join()
+            languageSérie.value = série.language
+           
+            
             buttonAjouter.textContent="Enregistrer"
-            pourHidden.forEach(div =>{
-                div.hidden=true
-            })
+          
             buttonAnnuler.hidden=false
+            buttonSuprimer.hidden=true
             
             console.log(idSérieModifier);
         })
+        }
     
     })
 }
