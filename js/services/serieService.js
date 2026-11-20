@@ -40,13 +40,17 @@ export async function filtrage(titre,genre,langue ) {
 
 export async function modifier(id){
    
-    
+    // let b=sériegenre.value.split(",")
     const response = await api.patch(`/series/${id}`,{
         name:sérieName.value,
-        // genres:sériegenre.value.split(",").map(g=>g.trim()),
+    
+        genres:b,
         summary:sérieDescription.value,
         language:languageSérie.value
 
     });
+
+    
+    
     return response.data
 }

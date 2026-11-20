@@ -8,6 +8,7 @@ import { suprimer } from "./services/serieService.js";
 import { ajouter } from "./services/serieService.js";
 import { filtrage } from "./services/serieService.js";
 import { modifier } from "./services/serieService.js";
+// import { affichage } from "./ui/cards.js";
 
 
 // import { chercherSérie } from "./data/store.js";
@@ -161,7 +162,7 @@ buttonAjouter.addEventListener("click" ,() =>{
     }else{
         
         modifierSérie(idSérieModifier)
-        buttonSuprimer.hidden=false
+        // buttonSuprimer.hidden=false
         // if (sérieName!="") {
         //     modifierSérie(idSérieModifier)
 
@@ -171,13 +172,15 @@ buttonAjouter.addEventListener("click" ,() =>{
 })
 
 async function modifierSérie(id){
-    
+        
     try {
         
         const response = await modifier(id)
       
         let série=(response);
         console.log(response.data);
+            console.log(sériegenre.value);
+    console.log(sériegenre.value.split(","))
         
         séries.forEach(s =>{
             
@@ -201,7 +204,7 @@ async function modifierSérie(id){
         buttonAnnuler.hidden=true
         
     } catch (error) {
-        afficherErreur(error)
+        // afficherErreur(error)
         
         
     }
@@ -299,14 +302,7 @@ buttonRéinitialiser.addEventListener("click", (e) =>{
     affichage(séries)
 })
 
-// buttonAnnuler.addEventListener("click",(e) =>{})  
-    // e.preventDefault()
-    // console.log("anneler");
-    
-    // sérieName.value=""
-    // pourHidden.forEach(div =>{
-    //     div.hidden=false
-    // })
+
     
 
 
