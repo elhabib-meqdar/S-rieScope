@@ -6,6 +6,11 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.21.1/axios.min.js"></script>
+    <script type="module" src="./js/main.js"></script>
+
+   
+
 </head>
 <body class="bg-[#000000] text-white m-5">
     <header class="flex gap-2 mb-20 items-center max-w-[1280px] my-0 mx-auto">
@@ -21,27 +26,48 @@
         <section class=" border border-[#393939] rounded-md p-5 bg-[#191919] mb-8">
             <h2 class="text-2xl font-bold mb-5">Ajouter une série</h2>
             <p class="mb-5">Les champs marqués d’un * sont obligatoires.</p>
-            <div class="grid gap-4 md:grid-cols-2 mb-3">
+            <div class="grid gap-4 md:grid-cols-2  lg:grid-cols-3 mb-3">
                 <div>
                     <label for="sérieName" class="font-semibold">Nom de la série *</label><br>
                     <input id="sérieName" type="text" placeholder="      Ex. The Bear"
                     class=" border border-[#393939] rounded-md h-12 w-full">
                 </div>
 
-                <div>
+                <div class="pourHidden">
                     <label for="genreSérie"class="font-semibold">Genre(s) *<small>séparés par des virgules</small></label><br>
                     <input id="genreSérie" type="text" placeholder="       Ex. Drame, Comédie"
                     class=" border border-[#393939]  rounded-md h-12 w-full">
                 </div>
+                <div class="pourHidden">
+                    <label for="languageSérie">language </label><br>
+                    <select name="" id="languageSérie"class=" border border-[#393939] rounded-md h-12 w-full">
+                        <option value="" class="text-black">Tous les languages</option>
+                        <option value="English" class="text-black">English</option>
+                        <option value="Mandarin Chinese" class="text-black">Mandarin Chinese</option>
+                        <option value="Arabic" class="text-black">Arabic</option>
+                        <option value="Spanish" class="text-black">Spanish</option>
+                        <option value="French" class="text-black">French</option>
+                        <option value="Hindi" class="text-black">Hindi</option>
+                        <option value="Urdu" class="text-black">Urdu</option>
+                        <option value="Portuguese" class="text-black">Portuguese</option>
+                        <option value="Turkish" class="text-black">Turkish</option>
+                    </select>
+
+                </div>
             </div>
-            <div class="mb-10">
-                <label for="sérieDescription"class="font-semibold">Description<span>facultative</span></label><br>
+            <div class="mb-10 pourHidden">
+                <label for="sérieDescription"class="font-semibold">Description <span>facultative</span></label><br>
                 <input id="sérieDescription" type="text" placeholder="     Résume la série en quelques mots…"
                 class=" border border-[#393939]  rounded-lg pb-13 w-full">
             </div>
+            <div>
             <button id="buttonAjouter" class="bg-white text-black rounded-md h-12 w-full md:w-70 ">
                 ＋ Ajouter la série
             </button>
+            <button id="buttonAnnuler" class="bg-white text-black rounded-md h-12 w-full md:w-70 "hidden>
+                Annuler 
+            </button>
+            </div>
 
         </section>
 
@@ -54,15 +80,23 @@
                     <input type="text" id="recherchParNom" placeholder="      Ex. Breaking Bad"
                     class=" border border-[#393939] rounded-md h-12 w-full">
                 </div>
-                <div class="grid grid-cols-[7fr_3fr] gap-3 items-center">
-                    <div>
-                        <label for="recherchParGenre">Genre</label><br>
-                        <select type="text" id="recherchParGenre" class=" border border-[#393939] rounded-md h-12 w-full">
-                            <option value="" class="text-black">Tous les genres</option>
-                            
-                        </select>
-                    </div>
-                    <button id="buttonRéinitialiser" class="rounded h-12 w-full border border-[#393939] mt-6">↻ Réinitialiser</button>
+                <!-- <div class="grid grid-cols-[7fr_3fr] gap-3 items-center"> -->
+                <div>
+                    <label for="recherchParGenre">Genre</label><br>
+                    <select type="text" id="recherchParGenre" class=" border border-[#393939] rounded-md h-12 w-full">
+                        <option value="" class="text-black">Tous les genres</option>
+                        
+                    </select>
+                </div>
+                <div>
+                    <label for="recherchParLanguage">language </label><br>
+                    <select name="" id="recherchParLanguage"class=" border border-[#393939] rounded-md h-12 w-full">
+                        <option value="" class="text-black">Tous les languages</option>
+   
+                    </select>
+                </div>
+                <div class="md:flex  justify-end">
+                    <button id="buttonRéinitialiser" class="rounded h-12 w-sm border border-[#393939] mt-6 ">↻ Réinitialiser</button>
                 </div>
             </div>
         </section>
@@ -70,10 +104,16 @@
             <section id="sérieDetel"></section>
             <div id="sériesEtNombre">
                 <p id="nombreSériesAficher"></p>
-                <section id="listSéries" class=" md:grid grid-cols-3 gap-3"></section>
+                <div >
+                    <p class="items-center text-2xl font-bold" id="message"></p>
+                </div>
+                <section id="listSéries" class=" md:grid grid-cols-3 gap-3">
+                    
+                </section>
             </div>
         </div>
     </main>
 </body>
-<script src="js/script.js"></script>
+<!-- <script src="js/main.js"></script> -->
+
 </html>
