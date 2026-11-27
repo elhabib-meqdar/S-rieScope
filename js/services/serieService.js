@@ -38,19 +38,9 @@ export async function filtrage(titre,genre,langue ) {
 }
 
 
-export async function modifier(id){
-   
-    // let b=sériegenre.value.split(",")
-    const response = await api.patch(`/series/${id}`,{
-        name:sérieName.value,
-    
-        genres:b,
-        summary:sérieDescription.value,
-        language:languageSérie.value
-
-    });
+export async function modifier(id,objSérie){
 
     
-    
+    const response = await api.patch(`/series/${id}`,objSérie)  
     return response.data
 }

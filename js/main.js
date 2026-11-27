@@ -18,7 +18,8 @@ let séries=[]
 
 const listSéries =document.getElementById("listSéries")
 const sérieDescription =document.getElementById("sérieDescription")
-const sériegenre =document.getElementById("genreSérie")
+let sériegenre =document.getElementById("genreSérie")
+const languageSérie=document.getElementById("languageSérie")
 const sérieName =document.getElementById("sérieName")
 const recherchParGenre=document.getElementById("recherchParGenre")
 const recherchParNom =document.getElementById("recherchParNom")
@@ -30,7 +31,7 @@ const buttonAnnuler =document.getElementById("buttonAnnuler")
 // const sérieDetel =document.getElementById("sérieDetel")
 // const sériesEtNombre =document.getElementById("sériesEtNombre")
 const message=document.getElementById("message")
-const languageSérie=document.getElementById("languageSérie")
+
 
 
 
@@ -157,30 +158,43 @@ buttonAjouter.addEventListener("click" ,() =>{
             sériegenre.value !=""){
         
             ajouterSérie(objSérie)
-
         }
     }else{
         
         modifierSérie(idSérieModifier)
-        // buttonSuprimer.hidden=false
-        // if (sérieName!="") {
-        //     modifierSérie(idSérieModifier)
 
-        // }
+        if (sérieName!="") {
+            modifierSérie(idSérieModifier)
+
+        }
         
     }
 })
 
 async function modifierSérie(id){
-        
+
+    const genrs=sériegenre.value.split(",").map(g=>g.trim())
+       objSérie ={
+    
+        "image":"",
+        "name":sérieName.value,
+        "language": languageSérie.value,
+        "genres":genrs,
+        "status": "Ended",
+        "summary":sérieDescription.value
+    }
+
+
+    
+     
     try {
         
-        const response = await modifier(id)
+        const response = await modifier(id,objSérie)
       
         let série=(response);
         console.log(response.data);
             console.log(sériegenre.value);
-    console.log(sériegenre.value.split(","))
+ 
         
         séries.forEach(s =>{
             
@@ -334,11 +348,7 @@ function affichage (séries){
         const sérieCarte =document.createElement("article")
         listSéries.append(sérieCarte)
         sérieCarte.classList.add('border','border-[#393939]','rounded-lg','mb-5',)
-        // sérieCarte.addEventListener("click", (e) =>{
-        //     e.preventDefault()
-        //     affichageDet(série)
-        //     sérieDetel.hidden=false
-        // })
+      
 
         const image =document.createElement("img")
         
